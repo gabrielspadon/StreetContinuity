@@ -6,60 +6,84 @@
 
 
 class PrimalGraph:
+    """
+    This class stores information about the Primal Graph of a given city.
+    The nodes and edges are stored in the form of dictionaries and can be mapped to an adjacency list.
+    """
+
+    # --- nested class ---
+
+    class Edge:  # also referred to as PrimalEdge
+        """
+        Edge is an inner class of PrimalGraph that stores information about the edge that connects a pair of nodes.
+        Such information comes straight from the input file, and we assume that they are all correct and verified.
+        """
+
+        def __init__(self, eid, source, target, length, name, label):
+            self.mapped = False   # [boolean] whether the edge was mapped or not;
+            self.source = source  # [string] index of the source node;
+            self.target = target  # [string] index of the target node;
+            self.length = length  # [float] street length (in meters);
+            self.label = label    # [string] street label or class (default: 'unclassified');
+            self.name = name      # [string] street name (default: 'unknown'); and,
+            self.eid = eid        # [integer] street index.
+
+    # --- nested class ---
 
     def __init__(self, node_dictionary, edge_dictionary):
-        self.node_dictionary = node_dictionary
-        self.edge_dictionary = edge_dictionary
+        self.node_dictionary = node_dictionary  # structure: {nid: [longitude, latitude]}
+        self.edge_dictionary = edge_dictionary  # structure: {eid: (instance) PrimalEdge}
         self.graph = {}
 
     def build_graph(self):
         """
-
-        :return:
+        This method creates an adjacency list of the PrimalGraph using the dictionary of edges.
+        Such a list stores the id of the edges (PrimalEdge object) that link pairs of nodes.
         """
 
         for eid in self.edge_dictionary.keys():
             edge = self.edge_dictionary[eid]
 
-            # if edge.source not in self.node_dictionary.keys() or edge.target not in self.node_dictionary.keys():
-            #     print('Please check if all nodes are within the nodes\' dictionary.')
+            # storing the outgoing link
+            if edge.source not in self.graph.keys():
+                self.graph[edge.source][edge.target] = None
 
-            if edge.source in self.graph.keys():
-                self.graph[edge.source][edge.target] = edge.eid
-            else:
-                self.graph[edge.source] = {edge.target: edge.eid}
+            self.graph[edge.source][edge.target] = edge.eid
 
-            if edge.target in self.graph.keys():
-                self.graph[edge.target][edge.source] = edge.eid
-            else:
-                self.graph[edge.target] = {edge.source: edge.eid}
+            # storing the incoming link
+            if edge.target not in self.graph.keys():
+                self.graph[edge.target][edge.source] = None
 
-        return
+            self.graph[edge.target][edge.source] = edge.eid
 
 
-class PrimalEdge:
+class DualGraph:
+    """
+    This class stores information about the Dual Graph that was mapped through a Primal Graph.
+    We only store information about dual edges; dual nodes, on the other hand, are inferred from the dual edges.
+    """
 
-    def __init__(self, eid, source, target, length, name, label):
-        self.source = source
-        self.target = target
-        self.length = float(length)
-        self.is_used = False
-        self.label = label
-        self.name = name
-        self.eid = eid
+    # --- nested class ---
 
+    class Edge:  # also referred to as DualEdge
+        """
+        Edge is an inner class of DualGraph used to store information about the edge that connects a pair of nodes.
+        Such information is iteratively updated every time a new Primal Graph edge is merged into a Dual Graph edge.
+        """
 
-class DualEdge:
+        def __init__(self, did, pge):
+            self.src_edge = pge.eid    # [integer] index of the first (left-most) primal edge;
+            self.tgt_edge = pge.eid    # [integer] index of the last (right-most) primal edge;
+            self.source = pge.source   # [string] index of the source node of the first primal edge;
+            self.target = pge.target   # [string] index of the target node of the last primal edge;
+            self.length = pge.length   # [float] cumulative length of the whole dual edge;
+            self.names = [pge.name]    # [list] list with names of all primal edges;
+            self.label = pge.label     # [string] label of primal edges within the dual edge;
+            self.nodes = [pge.source,  # [list] list of all primal nodes within the dual edge; and,
+                          pge.target]
+            self.did = did             # [integer] dual edge index.
 
-    def __init__(self, did, primal_edge):
-        self.source_eid = primal_edge.eid
-        self.target_eid = primal_edge.eid
-        self.source = primal_edge.source
-        self.target = primal_edge.target
-        self.length = primal_edge.length
-        self.names = [primal_edge.name]  # dual edge can take different names
-        self.label = primal_edge.label  # dual edge can only have 1 label
-        self.nodes = [self.source, self.target]  # dual edge takes different nodes
-        self.did = did
+    # --- nested class ---
 
-        # edge_dictionary[eid].is_used = True
+    def __init__(self):
+        self.dual_dictionary = {}
