@@ -37,13 +37,14 @@ Simple example
 
 Bugs
 ----
-Please report any bugs that you find `here <https://github.com/gabrielspadon/XXX/issues>`.
-Or, even better, fork the repository on GitHub and create a pull request.
+    Please report any bugs that you find `here <https://github.com/gabrielspadon/XXX/issues>`.
+    Or, even better, fork the repository on GitHub and create a pull request.
 
 License
 -------
-Released under the GNU General Public License v3.0 (GLP-3.0):
-   Copyright (C) 2019 by Gabriel Spadon <gabriel@spadon.com.br>
+    Released under the GNU General Public License v3.0 (GLP-3.0).
+    Copyright 2019, Gabriel Spadon, all rights reserved.
+        www.spadon.com.br & gabriel@spadon.com.br
 """
 
 import csv
@@ -70,69 +71,48 @@ class PrimalEdge:
         self.eid = eid
 
 
-def primal_mapper(directory, nodes_filename, edges_filename, use_label, has_header=False):
-
-    global node_dictionary  # updating the global nodes variable
-    with open(directory + '/' + nodes_filename, 'r') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
-        for nid, lon, lat in csv_reader:
-            if not has_header:
-                node_dictionary[nid] = [np.float(lon), np.float(lat)]
-            else:
-                has_header = False
-
-    print('[P] #Nodes: %d' % len(node_dictionary.keys()))
-
-    global edge_dictionary  # updating the global edges variable
-    with open(directory + '/' + edges_filename, 'r') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
-
-        for eid, source, target, length, name, label in csv_reader:
-            if not has_header:
-                if calculate_distance(source, target) > 0.0:
-                    data = PrimalEdge(eid, source, target, length, name, label if use_label else 'unclassified')
-                    edge_dictionary[eid] = data
-            else:
-                has_header = False
-
-    print('[P] #Edges: %d' % len(edge_dictionary.keys()))
-
-    global graph  # updating the global graph variable
-    for eid in edge_dictionary.keys():
-        edge = edge_dictionary[eid]
-
-        if edge.source in graph.keys():
-            graph[edge.source][edge.target] = edge.eid
-        else:
-            graph[edge.source] = {edge.target: edge.eid}
-
-        if edge.target in graph.keys():
-            graph[edge.target][edge.source] = edge.eid
-        else:
-            graph[edge.target] = {edge.source: edge.eid}
-
-    return
-
-
-# helper function, compute the unit direction vector
-def calculate_distance(source, target):
-    # extracting nodes coordinates
-    src_lon, src_lat = node_dictionary[source]
-    tgt_lon, tgt_lat = node_dictionary[target]
-    # calculating the double-precision floating-point length of the edge
-    return np.round(ox.great_circle_vec(src_lat, src_lon, tgt_lat, tgt_lon), 2)
-
-
-def compute_angle(neighbor, source, target):
-    # estimating the triangle's sides length
-    d_sn = calculate_distance(neighbor, source)
-    d_nt = calculate_distance(source, target)
-    d_st = calculate_distance(neighbor, target)
-
-    # calculating the law of cosines: cos(angle) = (a² + b² - c²) / (2ab)
-    cos_law = min(max(-1, (((d_sn ** 2) + (d_nt ** 2) - (d_st ** 2)) / (2 * d_sn * d_nt))), 1)
-    return math.acos(cos_law) * (180 / math.pi)
-
+# def primal_mapper(directory, nodes_filename, edges_filename, use_label, has_header=False):
+#
+#     global node_dictionary  # updating the global nodes variable
+#     with open(directory + '/' + nodes_filename, 'r') as csv_file:
+#         csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
+#         for nid, lon, lat in csv_reader:
+#             if not has_header:
+#                 node_dictionary[nid] = [np.float(lon), np.float(lat)]
+#             else:
+#                 has_header = False
+#
+#     print('[P] #Nodes: %d' % len(node_dictionary.keys()))
+#
+#     global edge_dictionary  # updating the global edges variable
+#     with open(directory + '/' + edges_filename, 'r') as csv_file:
+#         csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
+#
+#         for eid, source, target, length, name, label in csv_reader:
+#             if not has_header:
+#                 if calculate_distance(source, target) > 0.0:
+#                     data = PrimalEdge(eid, source, target, length, name, label if use_label else 'unclassified')
+#                     edge_dictionary[eid] = data
+#             else:
+#                 has_header = False
+#
+#     print('[P] #Edges: %d' % len(edge_dictionary.keys()))
+#
+#     global graph  # updating the global graph variable
+#     for eid in edge_dictionary.keys():
+#         edge = edge_dictionary[eid]
+#
+#         if edge.source in graph.keys():
+#             graph[edge.source][edge.target] = edge.eid
+#         else:
+#             graph[edge.source] = {edge.target: edge.eid}
+#
+#         if edge.target in graph.keys():
+#             graph[edge.target][edge.source] = edge.eid
+#         else:
+#             graph[edge.target] = {edge.source: edge.eid}
+#
+#     return
 
 class DualEdge:
     # define the dual edge data, take a primal edge as start point
@@ -274,123 +254,6 @@ def dual_mapper(directory, file_prefix):
     print('[D] #Nodes: %d' % (eid - 1))
     print_supplementary(directory, file_prefix)
     print_dual(directory, file_prefix)
-
-
-def load_csv(nodes_filename, edges_filename, directory, use_label, has_header=False):
-    """
-
-    :param nodes_filename:
-    :param edges_filename:
-    :param directory:
-    :param use_label:
-    :param has_header:
-    :return:
-    """
-
-    node_dictionary  = {}
-    with open(directory + '/' + nodes_filename, 'r') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
-        for nid, lon, lat in csv_reader:
-            if not has_header:
-                node_dictionary[nid] = [np.float(lon), np.float(lat)]
-            else:
-                has_header = False
-
-    edge_dictionary  = {}
-    with open(directory + '/' + edges_filename, 'r') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
-
-        for eid, source, target, length, name, label in csv_reader:
-            if not has_header:
-                if calculate_distance(source, target) > 0.0:
-                    data = PrimalEdge(eid, source, target, length, name, label if use_label else 'unclassified')
-                    edge_dictionary[eid] = data
-            else:
-                has_header = False
-
-    graph_dictionary = build_graph(node_dictionary, edge_dictionary)
-
-    return graph_dictionary, node_dictionary, edge_dictionary
-
-
-def load_osmnx(oxg, use_label):
-    """
-
-    :param oxg:
-    :param use_label:
-    :return:
-    """
-
-    global node_dictionary
-
-    # Direction is not important in this case, so let's use a simple Graph.
-    oxg = nx.Graph(oxg)  # MultiDiGraph (input) ~> Graph (output)
-
-    # Removing self loops from the graph.
-    oxg.remove_edges_from(oxg.selfloop_edges())
-
-    # latitude [y] and longitude [x] (must keep the order)
-    node_dictionary = {nid: [data['y'], data['x']] for nid, data in oxg.nodes(data=True)}
-
-    eid = 0
-    edge_dictionary = {}
-    for source, target, data in oxg.edges(data=True):
-        length = calculate_distance(source, target)  # approximating the distance between source and target
-        label = data.get('highway', 'unclassified')  # using 'unclassified' as the default value for highways
-        name = data.get('name', 'unknown')  # 'unknown' is the default value for street name attribute
-
-        # creating a new PrimalEdge object with the collected information
-        edge = PrimalEdge(eid, source, target, length, 'unknown' if type(name) == list else name,
-                          'unclassified' if type(label) == list else label if use_label else 'unclassified')
-
-        # storing the new edge in the edge dictionary
-        edge_dictionary[eid] = edge
-        eid += 1
-
-    graph_dictionary = build_graph(node_dictionary, edge_dictionary)
-
-    return graph_dictionary, node_dictionary, edge_dictionary
-
-
-def load_graphml(graphml_file, use_label):
-    """
-
-    :param graphml_file:
-    :param use_label:
-    :return:
-    """
-
-    oxg = ox.load_graphml(filename=graphml_file, folder='')
-
-    return load_osmnx(oxg, use_label)
-
-
-def build_graph(node_dictionary, edge_dictionary):
-    """
-
-    :param node_dictionary:
-    :param edge_dictionary:
-    :return:
-    """
-
-    graph_dictionary = {}
-    for eid in edge_dictionary.keys():
-        edge = edge_dictionary[eid]
-
-        if edge.source not in node_dictionary.keys() or edge.target not in node_dictionary.keys():
-            print('Please check if all nodes are within the nodes\' dictionary.')
-
-        if edge.source in graph_dictionary.keys():
-            graph_dictionary[edge.source][edge.target] = edge.eid
-        else:
-            graph_dictionary[edge.source] = {edge.target: edge.eid}
-
-        if edge.target in graph_dictionary.keys():
-            graph_dictionary[edge.target][edge.source] = edge.eid
-        else:
-            graph_dictionary[edge.target] = {edge.source: edge.eid}
-
-    return graph_dictionary
 
 
 if __name__ == '__main__':  # For testing purpose
