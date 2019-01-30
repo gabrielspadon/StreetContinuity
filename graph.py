@@ -11,7 +11,7 @@ class PrimalGraph:
     The nodes and edges are stored in the form of dictionaries and can be mapped to an adjacency list.
     """
 
-    # --- nested class ---
+    # --- nested class --- #
 
     class Edge:  # also referred to as PrimalEdge
         """
@@ -19,7 +19,7 @@ class PrimalGraph:
         Such information comes straight from the input file, and we assume that they are all correct and verified.
         """
 
-        def __init__(self, eid, source, target, length, name, label):
+        def __init__(self, eid: int, source: str, target: str, length: float, name: str, label: str):
             self.mapped = False   # [boolean] whether the edge was mapped or not;
             self.source = source  # [string] index of the source node;
             self.target = target  # [string] index of the target node;
@@ -28,17 +28,18 @@ class PrimalGraph:
             self.name = name      # [string] street name (default: 'unknown'); and,
             self.eid = eid        # [integer] street index.
 
-    # --- nested class ---
+    # --- nested class --- #
 
-    def __init__(self, node_dictionary, edge_dictionary):
-        self.node_dictionary = node_dictionary  # structure: {nid: [longitude, latitude]}
-        self.edge_dictionary = edge_dictionary  # structure: {eid: (instance) PrimalEdge}
+    def __init__(self):
+        self.node_dictionary = {}
+        self.edge_dictionary = {}
         self.graph = {}
 
     def build_graph(self):
         """
         This method creates an adjacency list of the PrimalGraph using the dictionary of edges.
         Such a list stores the id of the edges (PrimalEdge object) that link pairs of nodes.
+        :return: PrimalGraph
         """
 
         for eid in self.edge_dictionary.keys():
@@ -56,6 +57,14 @@ class PrimalGraph:
 
             self.graph[edge.target][edge.source] = edge.eid
 
+        return self
+
+    def set_nodes(self, node_dictionary: dict):
+        self.node_dictionary = node_dictionary
+
+    def set_edges(self, edge_dictionary: dict):
+        self.edge_dictionary = edge_dictionary
+
 
 class DualGraph:
     """
@@ -63,7 +72,7 @@ class DualGraph:
     We only store information about dual edges; dual nodes, on the other hand, are inferred from the dual edges.
     """
 
-    # --- nested class ---
+    # --- nested class --- #
 
     class Edge:  # also referred to as DualEdge
         """
@@ -71,19 +80,19 @@ class DualGraph:
         Such information is iteratively updated every time a new Primal Graph edge is merged into a Dual Graph edge.
         """
 
-        def __init__(self, did, pge):
+        def __init__(self, did: int, pge: PrimalGraph.Edge):
             self.src_edge = pge.eid    # [integer] index of the first (left-most) primal edge;
             self.tgt_edge = pge.eid    # [integer] index of the last (right-most) primal edge;
             self.source = pge.source   # [string] index of the source node of the first primal edge;
             self.target = pge.target   # [string] index of the target node of the last primal edge;
             self.length = pge.length   # [float] cumulative length of the whole dual edge;
-            self.names = [pge.name]    # [list] list with names of all primal edges;
             self.label = pge.label     # [string] label of primal edges within the dual edge;
+            self.names = [pge.name]    # [list] list with names of all primal edges;
             self.nodes = [pge.source,  # [list] list of all primal nodes within the dual edge; and,
                           pge.target]
             self.did = did             # [integer] dual edge index.
 
-    # --- nested class ---
+    # --- nested class --- #
 
     def __init__(self):
         self.dual_dictionary = {}
