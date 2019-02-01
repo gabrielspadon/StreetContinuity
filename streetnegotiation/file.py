@@ -23,7 +23,7 @@ def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label
     :param edges_filename: edges filename
     :param directory: full path of the files directory
     :param use_label: if true, it maps streets' type as labels (required for the HICN algorithm)
-                      otherwise, streets' type are standardized as "unlabeled" (required for the ICN algorithm)
+                      otherwise, streets' type is standardized as "unlabeled" (required for the ICN algorithm)
     :param has_header: if true, it skips the first line when reading the files
     :return: PrimalGraph
     """
@@ -96,7 +96,7 @@ def from_osmnx(oxg: nx.MultiDiGraph, use_label: bool):
     oxg.remove_edges_from(oxg.selfloop_edges())
 
     # latitude (y-axis) and longitude (x-axis)
-    node_dictionary = {nid: [data['y'], data['x']] for nid, data in oxg.nodes(data=True)}
+    node_dictionary = {nid: (data['y'], data['x']) for nid, data in oxg.nodes(data=True)}
 
     # updating the dictionary of nodes
     primal_graph.node_dictionary = node_dictionary
@@ -106,7 +106,8 @@ def from_osmnx(oxg: nx.MultiDiGraph, use_label: bool):
     for source, target, data in oxg.edges(data=True):
         name = data.get('name', 'unknown')  # unknown is the default value for streets' name
         label = data.get('highway', 'unclassified')  # unclassified is the default value for streets' type
-        length = compute_distance(source, target)  # straight-line distance between source and target nodes
+        length = compute_distance(node_dictionary[source],
+                                  node_dictionary[target])  # straight-line distance between source and target nodes
 
         # creating a new PrimalEdge with information from the current edge
         edge = primal_graph.Edge(eid, source, target, float(length), 'unknown' if type(name) == list else name,
@@ -127,7 +128,7 @@ def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', d
     """
     This method saves a supplementary file with all the information of DualEdges within the DualGraph.
     Each line of the file refers to a DualEdge and is organized as: index, length, label, names, and list of nodes.
-    :param graph: a DualGraph instance
+    :param graph: a DualGraph object
     :param filename: name and extension of the output file
     :param directory: full path to save the supplementary file
     :return: None
@@ -138,8 +139,8 @@ def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', d
 
     # will overwrite the file if it exists
     with open(filepath, 'w+') as supplementary_file:
-        for did, data in graph.dual_dictionary.items():
-            supplementary_file.write('%s, %f, %s, %s, %s\n' % (did, data.length, data.label, data.names, data.nodes))
+        for nid, data in graph.node_dictionary.items():
+            supplementary_file.write('%s, %f, %s, %s, %s\n' % (nid, data.length, data.label, data.names, data.nodes))
         supplementary_file.close()
 
     return
@@ -157,7 +158,7 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
     nxg = nx.Graph()
 
     # creating nodes to store the streets of the PrimalGraph
-    for nid, data in graph.dual_dictionary.items():
+    for nid, data in graph.node_dictionary.items():
         nxg.add_node(nid, attr=data)  # inserting new node and related attributes
 
     # creating edges (DualEdge) that connect nodes whenever we have two edges (PrimalEdge) crossings each other

@@ -46,7 +46,7 @@ def compute_angle(neighbor, source, target):
     d_st = compute_distance(neighbor, target)
 
     # calculating the law of cosines and forcing bounds into -1 and +1
-    cos_law = np.min(np.max(-1, (((d_sn ** 2) + (d_nt ** 2) - (d_st ** 2)) / (2 * d_sn * d_nt))), 1)
+    cos_law = min(max(-1.0, (((d_sn ** 2.0) + (d_nt ** 2.0) - (d_st ** 2.0)) / (2.0 * d_sn * d_nt))), 1.0)
 
     # computing the angle in degrees
-    return np.acos(cos_law) * (180 / np.pi)
+    return np.arccos(cos_law) * (180.0 / np.pi)
