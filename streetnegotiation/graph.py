@@ -48,13 +48,13 @@ class PrimalGraph:
 
             # storing the outgoing link
             if edge.source not in self.graph.keys():
-                self.graph[edge.source][edge.target] = None
+                self.graph[edge.source] = {edge.target: None}
 
             self.graph[edge.source][edge.target] = edge.eid
 
             # storing the incoming link
             if edge.target not in self.graph.keys():
-                self.graph[edge.target][edge.source] = None
+                self.graph[edge.target] = {edge.source: None}
 
             self.graph[edge.target][edge.source] = edge.eid
 
@@ -97,4 +97,34 @@ class DualGraph:
 
     def __init__(self):
         self.edge_dictionary = {}  # the edges that connect the dual nodes
-        self.dual_dictionary = {}  # this is the nodes' dictionary; each item is a set of streets of greatest continuity
+        self.node_dictionary = {}  # each item in this dictionary is a set of streets of greatest continuity
+        self.graph = {}
+
+    def build_graph(self):
+        """
+        This method creates the adjacency list of the DualGraph using the dictionary of edges.
+        Such a list stores the id of the edges (DualEdge object) that link pairs of nodes.
+        :return: DualEdge
+        """
+
+        for eid, edge in self.edge_dictionary.items():
+
+            # storing the outgoing link
+            if edge.source not in self.graph.keys():
+                self.graph[edge.source] = {edge.target: None}
+
+            self.graph[edge.source][edge.target] = edge.eid
+
+            # storing the incoming link
+            if edge.target not in self.graph.keys():
+                self.graph[edge.target] = {edge.source: None}
+
+            self.graph[edge.target][edge.source] = edge.eid
+
+        return self
+
+    def set_nodes(self, node_dictionary: dict):
+        self.node_dictionary = node_dictionary
+
+    def set_edges(self, edge_dictionary: dict):
+        self.edge_dictionary = edge_dictionary
