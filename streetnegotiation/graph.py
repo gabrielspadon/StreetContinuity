@@ -1,14 +1,16 @@
+# coding=utf-8
 #
 #   Copyright 2019, Gabriel Spadon, all rights reserved.
 #   This code is under GNU General Public License v3.0.
 #       www.spadon.com.br & gabriel@spadon.com.br
 #
+# Verified on February 1th, 2019.
 
 
 class PrimalGraph:
     """
-    This class stores information about the Primal Graph of a given city.
-    The nodes and edges are stored in the form of dictionaries and can be mapped to an adjacency list.
+    This class gathered information about the Primal Graph of a given city.
+    The nodes and edges are stored in the form of dictionaries and can be mapped into an adjacency list.
     """
 
     # --- nested class --- #
@@ -37,13 +39,12 @@ class PrimalGraph:
 
     def build_graph(self):
         """
-        This method creates an adjacency list of the PrimalGraph using the dictionary of edges.
+        This method creates the adjacency list of the PrimalGraph using the dictionary of edges.
         Such a list stores the id of the edges (PrimalEdge object) that link pairs of nodes.
         :return: PrimalGraph
         """
 
-        for eid in self.edge_dictionary.keys():
-            edge = self.edge_dictionary[eid]
+        for eid, edge in self.edge_dictionary.items():
 
             # storing the outgoing link
             if edge.source not in self.graph.keys():
@@ -77,7 +78,7 @@ class DualGraph:
     class Edge:  # also referred to as DualEdge
         """
         Edge is an inner class of DualGraph used to store information about the edge that connects a pair of nodes.
-        Such information is iteratively updated every time a new Primal Graph edge is merged into a Dual Graph edge.
+        Such information is iteratively updated every time a new PrimalEdge is merged into a DualEdge.
         """
 
         def __init__(self, did: int, pge: PrimalGraph.Edge):
@@ -95,4 +96,5 @@ class DualGraph:
     # --- nested class --- #
 
     def __init__(self):
-        self.dual_dictionary = {}
+        self.edge_dictionary = {}  # the edges that connect the dual nodes
+        self.dual_dictionary = {}  # this is the nodes' dictionary; each item is a set of streets of greatest continuity
