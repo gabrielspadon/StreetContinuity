@@ -124,10 +124,10 @@ def from_osmnx(oxg: nx.MultiDiGraph, use_label: bool):
     return primal_graph.build_graph()
 
 
-def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', directory: str = 'data'):
+def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', directory: str = '../data'):
     """
-    This method saves a supplementary file with all the information of DualEdges within the DualGraph.
-    Each line of the file refers to a DualEdge and is organized as: index, length, label, names, and list of nodes.
+    This method saves a supplementary file with all the information of DualNodes within the DualGraph.
+    Each line of the file refers to a DualNode and is organized as: index, length, label, names, and list of primal nodes.
     :param graph: a DualGraph object
     :param filename: name and extension of the output file
     :param directory: full path to save the supplementary file
@@ -146,7 +146,7 @@ def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', d
     return
 
 
-def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: str = 'data'):
+def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: str = '../data'):
     """
     This method writes a DualGraph into a GraphML file using OSMNX and NetworkX libraries.
     :param graph: a DualGraph mapped from a PrimalGraph
@@ -159,11 +159,23 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
 
     # creating nodes to store the streets of the PrimalGraph
     for nid, data in graph.node_dictionary.items():
-        nxg.add_node(nid, attr=data)  # inserting new node and related attributes
+        # inserting new node and related attributes
+        nxg.add_node(nid)
+        # GraphML does not support lists and dictionaries as objects, so we must add attributes one by one
+        nxg.node[nid]['names'] = str(data.names)
+        nxg.node[nid]['nodes'] = str(data.nodes)
+        nxg.node[nid]['source'] = data.source
+        nxg.node[nid]['target'] = data.target
+        nxg.node[nid]['length'] = data.length
+        nxg.node[nid]['src_edge'] = data.src_edge
+        nxg.node[nid]['tgt_edge'] = data.tgt_edge
 
-    # creating edges (DualEdge) that connect nodes whenever we have two edges (PrimalEdge) crossings each other
-    for eid, source, target in graph.edge_dictionary.items():
-        nxg.add_edge(source, target, attr={'eid': eid})  # inserting new node and related attributes
+    # creating edges that connect nodes whenever we have two edges (PrimalEdge) crossings each other
+    for eid, (source, target) in graph.edge_dictionary.items():
+        # inserting new node and related attributes
+        nxg.add_edge(source, target)
+        # same happens to this case in here
+        nxg.edges[(source, target)]['eid'] = eid
 
     # assembling the output file path
     filepath = '{}/{}'.format(directory, filename)
