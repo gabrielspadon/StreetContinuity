@@ -47,4 +47,4 @@ Result
 
 This is the resulting graph using Gephi and OpenOrd layout with default parameters:
 
-![Dual Graph](https://github.com/gabrielspadon/StreetNegotiation/images/sc-test.png)
+![Dual Graph](https://github.com/gabrielspadon/StreetNegotiation/blob/master/images/sc-test.png)
