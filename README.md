@@ -38,6 +38,7 @@ oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
 p_graph = from_osmnx(oxg=oxg, use_label=True)
 d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
 
+# you must create the data directory before running this command
 write_graphml(graph=d_graph, filename='file.graphml', directory='data')
 write_supplementary(graph=d_graph, filename='supplementary.txt', directory='data')
 ```
