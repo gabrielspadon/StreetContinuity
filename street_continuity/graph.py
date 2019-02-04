@@ -91,6 +91,7 @@ class DualGraph:
             self.names = [pge.name]    # [list] list with names of all primal edges;
             self.nodes = [pge.source,  # [list] list of all primal nodes within the dual node; and,
                           pge.target]
+            self.edges = [(pge.source, pge.target)]  # TODO ...
             self.did = did             # [integer] dual node index.
 
     # --- nested class --- #

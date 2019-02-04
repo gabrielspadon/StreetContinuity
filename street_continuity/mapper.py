@@ -104,8 +104,10 @@ def extend_neighborhood(primal_graph: PrimalGraph, neighborhood: list, dual_node
             primal_graph.edge_dictionary[eid].mapped = True
 
             if is_upstream:
+                dual_node.edges.insert(0, (candidate, dual_node.source))  # TODO ...
                 dual_node.source = candidate  # to upstream neighborhood, we update the source of the dual node
             else:
+                dual_node.edges.append((dual_node.target, candidate))  # TODO ...
                 dual_node.target = candidate  # otherwise, we update the dual node target
 
             # the length of the street grows by summing the old length with the one from the merged primal edge

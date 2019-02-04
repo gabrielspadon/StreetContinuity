@@ -152,7 +152,7 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
     :param graph: a DualGraph mapped from a PrimalGraph
     :param filename: name of the output file
     :param directory: full path to save the file
-    :return: None
+    :return: NetworkX Graph
     """
 
     nxg = nx.Graph()
@@ -164,6 +164,7 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
         # GraphML does not support lists and dictionaries as objects, so we must add attributes one by one
         nxg.node[nid]['names'] = str(data.names)
         nxg.node[nid]['nodes'] = str(data.nodes)
+        nxg.node[nid]['edges'] = str(data.edges)
         nxg.node[nid]['source'] = data.source
         nxg.node[nid]['target'] = data.target
         nxg.node[nid]['length'] = data.length
@@ -183,4 +184,4 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
     # writing the resulting graph to the informed file path
     nx.write_graphml(G=nxg, path=filepath, encoding='utf-8', prettyprint=True, infer_numeric_types=False)
 
-    return
+    return nxg
