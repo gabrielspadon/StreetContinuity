@@ -35,6 +35,9 @@ from StreetContinuity.all import *
 
 oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
 
+# use_label = True: uses HICN algorithm
+# use_label = False: uses ICN algorithm
+
 p_graph = from_osmnx(oxg=oxg, use_label=True)
 d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
 
