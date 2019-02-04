@@ -22,7 +22,7 @@ For details about their implementation, please refer to:
 Dependencies
 --------------
 
-* numpy (1.15.1)
+* numpy (1.15.4)
 * osmnx (0.8.1)
 * networkx (2.1)
 
@@ -47,4 +47,6 @@ Result
 
 This is the resulting graph using Gephi and OpenOrd layout with default parameters:
 
-![Dual Graph](https://github.com/gabrielspadon/StreetNegotiation/blob/master/images/sc-test.png)
+![Primal and Dual Graph](https://github.com/gabrielspadon/StreetNegotiation/blob/master/images/sc-test.png)
+
+Primal Graph on the left and Dual Graph on the right.
