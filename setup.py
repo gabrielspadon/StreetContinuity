@@ -1,7 +1,7 @@
 """
-Street Negotiation (SN)
+StreetContinuity (SC)
 ========
-    Street Negotiation (SN) is a python library that implements both Intersection Continuity Negotiation (ICN) and
+    StreetContinuity (SC) is a python library that implements both Intersection Continuity Negotiation (ICN) and
     Hierarchical Intersection Continuity Negotiation (HICN). ICN was first proposed by Porta et al. (2006) and
     further enhanced by Masucci et al. (2014), who advanced with the HICN approach.
 
@@ -25,15 +25,15 @@ Street Negotiation (SN)
         https://spadon.com.br/
 
     Source::
-        https://github.com/gabrielspadon/StreetNegotiation
+        https://github.com/gabrielspadon/StreetContinuity
 
     Bug reports::
-        https://github.com/gabrielspadon/StreetNegotiation/issues
+        https://github.com/gabrielspadon/StreetContinuity/issues
 
 Simple example
 --------------
 
-    >>> from streetnegotiation.all import *
+    >>> from street_continuity.all import *
 
     >>> import osmnx as ox
 
@@ -47,7 +47,7 @@ Simple example
 
 Bugs
 ----
-    Please report any bugs that you find `here <https://github.com/gabrielspadon/StreetNegotiation/issues>`.
+    Please report any bugs that you find `here <https://github.com/gabrielspadon/StreetContinuity/issues>`.
     Or, even better, fork the repository on GitHub and create a pull request.
 
 License
@@ -65,9 +65,9 @@ def readme():
         return f.read()
 
 
-setup(name='StreetNegotiation',
+setup(name='StreetContinuity',
       version='0.1',
-      description='Street Negotiation is a tool-set to map primal graphs to dual graphs focused on street networks.',
+      description='StreetContinuity is a tool-set to map primal graphs to dual graphs focused on street networks.',
       classifiers=[
         'Development Status :: 0 - Alpha',
         'License :: GNU General Public License v3.0',
@@ -75,11 +75,11 @@ setup(name='StreetNegotiation',
         'Topic :: Graph Processing',
       ],
       keywords='primal graph, primal network, dual graph, dual network',
-      url='https://github.com/gabrielspadon/StreetNegotiation',
+      url='https://github.com/gabrielspadon/StreetContinuity',
       author='Gabriel Spadon',
       author_email='gabriel@spadon.com.br',
       license='GLP-3.0',
-      packages=['streetnegotiation'],
+      packages=['street_continuity'],
       install_requires=[
           'numpy',
           'osmnx',

@@ -7,8 +7,8 @@
 # Verified on February 1th, 2019.
 
 
-from streetnegotiation.util import *
-from streetnegotiation.graph import *
+from street_continuity.util import *
+from street_continuity.graph import *
 
 import csv
 import numpy as np

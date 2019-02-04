@@ -7,8 +7,8 @@
 # Verified on February 4th, 2019.
 
 
-from streetnegotiation.util import *
-from streetnegotiation.graph import *
+from street_continuity.util import *
+from street_continuity.graph import *
 
 import numpy as np
 
@@ -204,7 +204,7 @@ def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 120.0):
 
 
 # if __name__ == '__main__':
-#     from streetnegotiation.file import *
+#     from street_continuity.file import *
 #     use_label = True
 #
 #     for angle in [90, 100, 110, 120]:
