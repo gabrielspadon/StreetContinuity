@@ -70,15 +70,15 @@ class PrimalGraph:
 class DualGraph:
     """
     This class stores information about the Dual Graph that was mapped through a Primal Graph.
-    We only store information about dual edges; dual nodes, on the other hand, are inferred from the dual edges.
+    The nodes and edges are stored in the form of dictionaries and can be mapped into an adjacency list.
     """
 
     # --- nested class --- #
 
-    class Edge:  # also referred to as DualEdge
+    class Node:  # also referred to as DualNode
         """
-        Edge is an inner class of DualGraph used to store information about the edge that connects a pair of nodes.
-        Such information is iteratively updated every time a new PrimalEdge is merged into a DualEdge.
+        Node is an inner class of DualGraph used to store information about nodes mapped from primal edges.
+        Such information is iteratively updated every time a new PrimalEdge is merged into a DualNode.
         """
 
         def __init__(self, did: int, pge: PrimalGraph.Edge):
@@ -86,12 +86,12 @@ class DualGraph:
             self.tgt_edge = pge.eid    # [integer] index of the last (right-most) primal edge;
             self.source = pge.source   # [string] index of the source node of the first primal edge;
             self.target = pge.target   # [string] index of the target node of the last primal edge;
-            self.length = pge.length   # [float] cumulative length of the whole dual edge;
-            self.label = pge.label     # [string] label of primal edges within the dual edge;
+            self.length = pge.length   # [float] cumulative length of the whole dual node;
+            self.label = pge.label     # [string] label of primal edges within the dual node;
             self.names = [pge.name]    # [list] list with names of all primal edges;
-            self.nodes = [pge.source,  # [list] list of all primal nodes within the dual edge; and,
+            self.nodes = [pge.source,  # [list] list of all primal nodes within the dual node; and,
                           pge.target]
-            self.did = did             # [integer] dual edge index.
+            self.did = did             # [integer] dual node index.
 
     # --- nested class --- #
 
@@ -103,8 +103,8 @@ class DualGraph:
     def build_graph(self):
         """
         This method creates the adjacency list of the DualGraph using the dictionary of edges.
-        Such a list stores the id of the edges (DualEdge object) that link pairs of nodes.
-        :return: DualEdge
+        Such a list stores the id of the edges that link pairs of nodes.
+        :return: DualGraph
         """
 
         for eid, edge in self.edge_dictionary.items():
