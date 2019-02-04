@@ -1,7 +1,7 @@
-Street Negotiation (SN)
+StreetContinuity (SC)
 ========
 
-Street Negotiation (SN) is a python library that implements both Intersection Continuity Negotiation (ICN) and Hierarchical Intersection Continuity Negotiation (HICN). ICN was first proposed by Porta et al. (2006) and further enhanced by Masucci et al. (2014), who advanced with the HICN approach.
+StreetContinuity (SC) is a python library that implements both Intersection Continuity Negotiation (ICN) and Hierarchical Intersection Continuity Negotiation (HICN). ICN was first proposed by Porta et al. (2006) and further enhanced by Masucci et al. (2014), who advanced with the HICN approach.
 
 For details about each implementation, please refer to:
 
@@ -31,7 +31,7 @@ Example
 
 ```python
 import osmnx as ox
-from streetnegotiation.all import *
+from StreetContinuity.all import *
 
 oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
 
@@ -48,6 +48,6 @@ Result
 
 This is the resulting graph using Gephi and OpenOrd layout with default parameters:
 
-![Primal and Dual Graph](https://github.com/gabrielspadon/StreetNegotiation/blob/master/images/sc-test.png)
+![Primal and Dual Graph](https://github.com/gabrielspadon/StreetContinuity/blob/master/images/sc-test.png)
 
 Primal Graph on the left and Dual Graph on the right.
