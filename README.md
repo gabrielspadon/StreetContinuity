@@ -5,9 +5,9 @@ StreetContinuity (SC) is a python library that implements both Intersection Cont
 
 For details about each implementation, please refer to:
 
-* Sergio Porta, Paolo Crucitti, Vito Latora, **The network analysis of urban streets: A dual approach**, Physica A: Statistical Mechanics and its Applications, Volume 369, Issue 2, 2006, Pages 853-866, ISSN 0378-4371.
+* (Sergio Porta, Paolo Crucitti, Vito Latora, **The network analysis of urban streets: A dual approach**, Physica A: Statistical Mechanics and its Applications, Volume 369, Issue 2, 2006, Pages 853-866, ISSN 0378-4371](https://doi.org/10.1016/j.physa.2005.12.063).
 
-* Masucci, A. P., Stanilov, K., Batty, M. (2014). **Exploring the evolution of London's street network in the information space: A dual approach.** Physical Review E, 89(1), 012805.
+* (Masucci, A. P., Stanilov, K., Batty, M. (2014). **Exploring the evolution of London's street network in the information space: A dual approach**. Physical Review E, 89(1), 012805](https://doi.org/10.1103/PhysRevE.89.012805).
 
 Acknowledgement
 --------------
@@ -17,7 +17,7 @@ Their code gave some insights and helped in the process of validation of the res
 
 For details about their implementation, please refer to:
 
-* Krueger, E., Klinkhamer, C., Urich, C., Zhan, X., & Rao, P. S. C. (2017). **Generic patterns in the evolution of urban water networks: Evidence from a large Asian city**. Physical Review E, 95(3), 032312.
+* [Krueger, E., Klinkhamer, C., Urich, C., Zhan, X., & Rao, P. S. C. (2017). **Generic patterns in the evolution of urban water networks: Evidence from a large Asian city**. Physical Review E, 95(3), 032312](https://dx.doi.org/10.1103/PhysRevE.95.032312).
 
 Dependencies
 --------------
@@ -49,8 +49,8 @@ write_supplementary(graph=d_graph, filename='supplementary.txt', directory='data
 Result
 --------------
 
-This is the resulting graph using Gephi and OpenOrd layout with default parameters:
+This is the resulting graph using Gephi (0.9.2) and [OpenOrd](https://github.com/gephi/gephi/wiki/OpenOrd) layout with default parameters:
 
 ![Primal and Dual Graph](https://github.com/gabrielspadon/StreetContinuity/blob/master/images/sc-test.png)
 
-Primal Graph on the left and Dual Graph on the right.
+Primal Graph (from OSMNX) on the left and Dual Graph (from StreetContinuity) on the right.
