@@ -9,7 +9,7 @@
 
 class PrimalGraph:
     """
-    This class gathered information about the Primal Graph of a given city.
+    This class gatherer information about the Primal Graph of a given city.
     The nodes and edges are stored in the form of dictionaries and can be mapped into an adjacency list.
     """
 
@@ -26,8 +26,8 @@ class PrimalGraph:
             self.source = source  # [string] index of the source node;
             self.target = target  # [string] index of the target node;
             self.length = length  # [float] street length (in meters);
-            self.label = label    # [string] street label or class (default: 'unclassified');
-            self.name = name      # [string] street name (default: 'unknown'); and,
+            self.label = label    # [string] street label or class (default: "unclassified");
+            self.name = name      # [string] street name (default: "unknown"); and,
             self.eid = eid        # [integer] street index.
 
     # --- nested class --- #
@@ -82,17 +82,18 @@ class DualGraph:
         """
 
         def __init__(self, did: int, pge: PrimalGraph.Edge):
-            self.src_edge = pge.eid    # [integer] index of the first (left-most) primal edge;
-            self.tgt_edge = pge.eid    # [integer] index of the last (right-most) primal edge;
-            self.source = pge.source   # [string] index of the source node of the first primal edge;
-            self.target = pge.target   # [string] index of the target node of the last primal edge;
-            self.length = pge.length   # [float] cumulative length of the whole dual node;
-            self.label = pge.label     # [string] label of primal edges within the dual node;
-            self.names = [pge.name]    # [list] list with names of all primal edges;
-            self.nodes = [pge.source,  # [list] list of all primal nodes within the dual node; and,
+            self.src_edge = pge.eid     # [integer] index of the first (left-most) primal edge;
+            self.tgt_edge = pge.eid     # [integer] index of the last (right-most) primal edge;
+            self.source = pge.source    # [string] index of the source node of the first primal edge;
+            self.target = pge.target    # [string] index of the target node of the last primal edge;
+            self.length = pge.length    # [float] cumulative length of the whole dual node;
+            self.label = pge.label      # [string] label of primal edges within the dual node;
+            self.names = [pge.name]     # [list] list with names of all primal edges;
+            self.nodes = [pge.source,   # [list] list of all primal nodes within the dual node;
                           pge.target]
-            self.edges = [(pge.source, pge.target)]  # TODO ...
-            self.did = did             # [integer] dual node index.
+            self.edges = [(pge.source,  # [list] list of pairs of edges part of the dual node; and,
+                           pge.target)]
+            self.did = did              # [integer] dual node index.
 
     # --- nested class --- #
 

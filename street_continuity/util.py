@@ -7,6 +7,7 @@
 # Verified on February 1th, 2019.
 
 
+import warnings
 import osmnx as ox
 import numpy as np
 
@@ -14,7 +15,7 @@ import numpy as np
 def compute_distance(source_coordinates: tuple, target_coordinates: tuple):
     """
     This method computes the double-precision floating-point straight-line distance between two nodes.
-    :param source_coordinates: coordinates of the source note (longitude, latitude)
+    :param source_coordinates: coordinates of the source node (longitude, latitude)
     :param target_coordinates: coordinates of the target node (longitude, latitude)
     :return: float
     """
@@ -39,6 +40,8 @@ def compute_angle(neighbor, source, target):
     :param target: the last node of the triplet
     :return: float
     """
+    # avoiding unnecessary warning outputs
+    warnings.filterwarnings('ignore')
 
     # estimating the triangle's sides length
     d_sn = compute_distance(neighbor, source)

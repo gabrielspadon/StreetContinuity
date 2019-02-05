@@ -13,7 +13,7 @@ from street_continuity.graph import *
 import numpy as np
 
 
-def merge_criteria(primal_graph: PrimalGraph, neighbors: list, source: int, src_edge: int, min_angle: float = 120):
+def __merge_criteria__(primal_graph: PrimalGraph, neighbors: list, source: int, src_edge: int, min_angle: float = 120):
     """
     The method uses the law of cosines to calculate the angle between the georeferenced coordinates
     of three given nodes. To this end, we approximate the straight-line distance of the sides of the
@@ -21,7 +21,7 @@ def merge_criteria(primal_graph: PrimalGraph, neighbors: list, source: int, src_
     to find the angle between the triplet which has the negotiator as the intermediate node.
     :param primal_graph: a street network mapped to a PrimalGraph object
     :param neighbors: list of neighbors of the source node
-    :param source: source node (also known as negotiator), which is the middle of the triplet
+    :param source: source node (also known as negotiator), which is in the middle of the triplet
     :param src_edge: edge from which the source node comes from
     :param min_angle: the minimum angle ]0.0, 180.0] that defines the continuity of two consecutive streets
     :return: ID of the neighbor that forms that highest convex angle or False whenever it does not exist
@@ -41,7 +41,7 @@ def merge_criteria(primal_graph: PrimalGraph, neighbors: list, source: int, src_
     return neighbors[np.argmax(candidates)] if np.max(candidates) >= min_angle else False
 
 
-def explore_neighborhood(primal_graph: PrimalGraph, dual_node: DualGraph.Node, is_upstream=True):
+def __explore_neighborhood__(primal_graph: PrimalGraph, dual_node: DualGraph.Node, is_upstream=True):
     """
     This method sweeps the upstream and downstream neighborhood when provided with the source and target of a dual node.
     As a result, it provides a list of candidate nodes, which can be used to merge primal edges into dual nodes.
@@ -69,15 +69,16 @@ def explore_neighborhood(primal_graph: PrimalGraph, dual_node: DualGraph.Node, i
                 eid = primal_graph.graph[leading_seed][neighbor]
             # retrieving the resulting edge
             edge = primal_graph.edge_dictionary[eid]
-            # the streets must be unused and have the same type, both of which are merge conditions
-            # ... notice that, when using the ICN instead of the HICN all labels should be standardized
+            # the streets must be unused and have the same type, both of which are known to be merge conditions
+            # notice that, when using the ICN instead of the HICN all labels should be standardized
             if not edge.mapped and edge.label == dual_node.label:
                 neighborhood.append(neighbor)
 
     return neighborhood
 
 
-def extend_neighborhood(primal_graph: PrimalGraph, neighborhood: list, dual_node: DualGraph.Node, min_angle: float, is_upstream=True):
+def __extend_neighborhood__(primal_graph: PrimalGraph, neighborhood: list,
+                            dual_node: DualGraph.Node, min_angle: float, is_upstream=True):
     """
     This method analyzes the candidate nodes and merges the dual node with an unused primal edge.
     This process consists of updating the source and target node (from the primal graph edges) that form the dual node.
@@ -94,7 +95,7 @@ def extend_neighborhood(primal_graph: PrimalGraph, neighborhood: list, dual_node
 
     if len(neighborhood):
         # retrieving the neighbor that forms the highest convex angle with the existing dual node
-        candidate = merge_criteria(primal_graph, neighborhood, dual_node.source, dual_node.src_edge, min_angle)
+        candidate = __merge_criteria__(primal_graph, neighborhood, dual_node.source, dual_node.src_edge, min_angle)
 
         if candidate:  # the candidate might not exist
             # defining the direction in which we will extend the neighborhood
@@ -104,10 +105,10 @@ def extend_neighborhood(primal_graph: PrimalGraph, neighborhood: list, dual_node
             primal_graph.edge_dictionary[eid].mapped = True
 
             if is_upstream:
-                dual_node.edges.insert(0, (candidate, dual_node.source))  # TODO ...
+                dual_node.edges.insert(0, (candidate, dual_node.source))  # storing the edge tuple for further user
                 dual_node.source = candidate  # to upstream neighborhood, we update the source of the dual node
             else:
-                dual_node.edges.append((dual_node.target, candidate))  # TODO ...
+                dual_node.edges.append((dual_node.target, candidate))  # storing the edge tuple for further user
                 dual_node.target = candidate  # otherwise, we update the dual node target
 
             # the length of the street grows by summing the old length with the one from the merged primal edge
@@ -129,7 +130,7 @@ def extend_neighborhood(primal_graph: PrimalGraph, neighborhood: list, dual_node
     return False
 
 
-def merge_streets(primal_graph: PrimalGraph, dual_node: DualGraph.Node, min_angle: float = 120.0):
+def __merge_streets__(primal_graph: PrimalGraph, dual_node: DualGraph.Node, min_angle: float = 120.0):
     """
     This method holds the recursive calls that grow the streets of a city in the form of a dual graph node. First, the
     technique explores the neighborhood looking for candidates and then, it uses the best candidate to form a street.
@@ -140,25 +141,25 @@ def merge_streets(primal_graph: PrimalGraph, dual_node: DualGraph.Node, min_angl
     """
 
     # exploring the neighborhood on the upstream side
-    upstream = explore_neighborhood(primal_graph, dual_node, is_upstream=True)
+    upstream = __explore_neighborhood__(primal_graph, dual_node, is_upstream=True)
     # exploring the neighborhood on the downstream side
-    downstream = explore_neighborhood(primal_graph, dual_node, is_upstream=False)
+    downstream = __explore_neighborhood__(primal_graph, dual_node, is_upstream=False)
 
     # the code stops when there are no candidates to expand the street
     if not len(upstream) and not len(downstream):
         return dual_node
 
     # growing the street on the upstream side
-    upstream_neighbor = extend_neighborhood(primal_graph, upstream, dual_node, min_angle, is_upstream=True)
+    upstream_neighbor = __extend_neighborhood__(primal_graph, upstream, dual_node, min_angle, is_upstream=True)
     # growing the street on the downstream side
-    downstream_neighbor = extend_neighborhood(primal_graph, downstream, dual_node, min_angle, is_upstream=False)
+    downstream_neighbor = __extend_neighborhood__(primal_graph, downstream, dual_node, min_angle, is_upstream=False)
 
     # the code stops when no candidates satisfy the merge criteria
     if not upstream_neighbor and not downstream_neighbor:
         return dual_node
 
     # if all looks good, we make a recursive call
-    merge_streets(primal_graph, dual_node)
+    __merge_streets__(primal_graph, dual_node)
 
 
 def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 120.0):
@@ -183,7 +184,7 @@ def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 120.0):
             # using the unmapped primal edge as the seed of the new dual node
             dual_node = dual_graph.Node(nid, primal_edge)
             # checking the upstream and downstream neighbors for street continuity
-            merge_streets(primal_graph, dual_node, min_angle)
+            __merge_streets__(primal_graph, dual_node, min_angle)
             # storing the resulting node in the node dictionary
             dual_graph.node_dictionary[nid] = dual_node
             # incrementing nodes' index
@@ -203,18 +204,3 @@ def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 120.0):
                 eid += 1
 
     return dual_graph
-
-
-# if __name__ == '__main__':
-#     from street_continuity.file import *
-#     use_label = True
-#
-#     for angle in [90, 100, 110, 120]:
-#         # I am using the city of Sao Carlos as an example, change as you please.
-#         oxg = ox.graph_from_point((-22.012282, -47.890821), distance=10000)
-#
-#         primal_graph = from_osmnx(oxg, use_label)
-#         dual_graph = dual_mapper(primal_graph, min_angle=120)
-#
-#         write_graphml(dual_graph)
-#         write_supplementary(dual_graph)

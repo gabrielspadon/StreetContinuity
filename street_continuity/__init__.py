@@ -1,6 +1,7 @@
 """
 StreetContinuity (SC)
-========
+--------------
+
     StreetContinuity (SC) is a python library that implements both Intersection Continuity Negotiation (ICN) and
     Hierarchical Intersection Continuity Negotiation (HICN). ICN was first proposed by Porta et al. (2006) and
     further enhanced by Masucci et al. (2014), who advanced with the HICN approach.
@@ -13,6 +14,9 @@ StreetContinuity (SC)
     [2] Masucci, A. P., Stanilov, K., Batty, M. (2014). "Exploring the evolution of London's street
         network in the information space: A dual approach." Physical Review E, 89(1), 012805.
 
+Acknowledgement
+--------------
+
     I want to thank Elisabeth H. Krueger and Xianyuan Zhan, who provide me with their version of the HICN.
     Their code gave some insights and helped in the process of validation of the results.
 
@@ -21,29 +25,39 @@ StreetContinuity (SC)
     [3] Krueger, E., Klinkhamer, C., Urich, C., Zhan, X., & Rao, P. S. C. (2017). "Generic patterns in the evolution
         of urban water networks: Evidence from a large Asian city". Physical Review E, 95(3), 032312.
 
+Dependencies
+--------------
+
+    * numpy (1.15.4)
+    * osmnx (0.8.1)
+    * networkx (2.1)
+
+Example
+--------------
+
+    >>> import osmnx as ox
+    >>> from StreetContinuity.all import *
+
+    >>> oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
+
+    >>> # use_label = True: uses HICN algorithm
+    >>> # use_label = False: uses ICN algorithm
+
+    >>> p_graph = from_osmnx(oxg=oxg, use_label=True)
+    >>> d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
+
+    >>> # you must create the data directory before running this command
+    >>> write_graphml(graph=d_graph, filename='file.graphml', directory='data')
+    >>> write_supplementary(graph=d_graph, filename='supplementary.txt', directory='data')
+
+Links
+--------------
+
     Portfolio::
         https://spadon.com.br/
 
     Source::
         https://github.com/gabrielspadon/StreetContinuity
-
-    Bug reports::
-        https://github.com/gabrielspadon/StreetContinuity/issues
-
-Simple example
---------------
-
-    >>> from street_continuity.all import *
-
-    >>> import osmnx as ox
-
-    >>> oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
-
-    >>> p_graph = from_osmnx(oxg=oxg, use_label=True)
-    >>> d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
-
-    >>> write_graphml(graph=d_graph, filename='file.graphml', directory='../data')
-    >>> write_supplementary(graph=d_graph, filename='supplementary.txt', directory='../data')
 
 Bugs
 ----
@@ -59,6 +73,6 @@ License
 
 import sys
 
-if sys.version_info[:2] < (3, 6):
-    m = "Python 3.6 or later is required for StreetPyradox (%d.%d was detected)."
+if sys.version_info[:2] < (3, 4):
+    m = "Python 3.4 or later is required by StreetContinuity (%d.%d was detected)."
     raise ImportError(m % sys.version_info[:2])
