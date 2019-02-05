@@ -127,7 +127,7 @@ def from_osmnx(oxg: nx.MultiDiGraph, use_label: bool):
 def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', directory: str = '../data'):
     """
     This method saves a supplementary file with all the information of DualNodes within the DualGraph.
-    Each line of the file refers to a DualNode and is organized as: index, length, label, names, and list of primal nodes.
+    Each line of the file refers to a DualNode and is organized as: index, length, label, names, and list of nodes.
     :param graph: a DualGraph object
     :param filename: name and extension of the output file
     :param directory: full path to save the supplementary file

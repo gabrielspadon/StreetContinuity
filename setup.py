@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(name='StreetContinuity',
       version='0.1',
-      description='StreetContinuity is a tool-set to map primal graphs to dual graphs focused on street networks.',
+      description='StreetContinuity is a tool-set to maps primal graphs to dual graphs, focusing on street networks.',
       classifiers=[
         'Development Status :: 0 - Alpha',
         'License :: GNU General Public License v3.0',
