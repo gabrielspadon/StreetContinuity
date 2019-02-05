@@ -5,9 +5,9 @@ StreetContinuity (SC) is a python library that implements both Intersection Cont
 
 For details about each implementation, please refer to:
 
-* (Sergio Porta, Paolo Crucitti, Vito Latora, **The network analysis of urban streets: A dual approach**, Physica A: Statistical Mechanics and its Applications, Volume 369, Issue 2, 2006, Pages 853-866, ISSN 0378-4371](https://doi.org/10.1016/j.physa.2005.12.063).
+* [Sergio Porta, Paolo Crucitti, Vito Latora, **The network analysis of urban streets: A dual approach**. Physica A: Statistical Mechanics and its Applications, Volume 369, Issue 2, 2006, Pages 853-866, ISSN 0378-4371](https://doi.org/10.1016/j.physa.2005.12.063).
 
-* (Masucci, A. P., Stanilov, K., Batty, M. (2014). **Exploring the evolution of London's street network in the information space: A dual approach**. Physical Review E, 89(1), 012805](https://doi.org/10.1103/PhysRevE.89.012805).
+* [Masucci, A. P., Stanilov, K., Batty, M. (2014). **Exploring the evolution of London's street network in the information space: A dual approach**. Physical Review E, 89(1), 012805](https://doi.org/10.1103/PhysRevE.89.012805).
 
 Acknowledgement
 --------------
