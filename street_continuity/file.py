@@ -49,7 +49,7 @@ def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label
 
         for eid, source, target, length, name, label in csv_reader:
             if not has_header:
-                if compute_distance(source, target) > 0.0:  # sanity check: self-loops are not allowed
+                if compute_distance(node_dictionary[source], node_dictionary[target]) > 0.0:  # sanity check: self-loops are not allowed
                     edge_dictionary[eid] = primal_graph.Edge(eid, source, target, np.float(length),
                                                              name, label if use_label else 'unclassified')
             has_header = False

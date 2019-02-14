@@ -36,7 +36,7 @@ Example
 --------------
 
     >>> import osmnx as ox
-    >>> from StreetContinuity.all import *
+    >>> from street_continuity.all import *
 
     >>> oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
 
