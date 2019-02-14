@@ -26,19 +26,33 @@ Dependencies
 * osmnx (0.8.1)
 * networkx (2.1)
 
+Instalation (for developers)
+--------------
+
+After downloading the SC library, install it on Python 3 using the following commands:
+
+
+```bash
+pip3 install . --user
+```
+
 Example
 --------------
 
 ```python
 import osmnx as ox
-from streetcontinuity.all import *
+from street_continuity.all import *
 
+# load the primal graph from osmnx
 oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
+p_graph = from_osmnx(oxg=oxg, use_label=True)
 
+# alternatively, you can load the graph from a csv file
+# p_graph = read_csv(nodes_filename='test-nodes.csv', edges_filename='test-edges.csv', directory='data', use_label=True, has_header=False)
+
+# maps the primal graph to the dual representation
 # use_label = True: uses HICN algorithm
 # use_label = False: uses ICN algorithm
-
-p_graph = from_osmnx(oxg=oxg, use_label=True)
 d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
 
 # you must create the data directory before running this command
