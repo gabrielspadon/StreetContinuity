@@ -13,7 +13,7 @@ from street_continuity.graph import *
 import numpy as np
 
 
-def __merge_criteria__(primal_graph: PrimalGraph, neighbors: list, source: int, src_edge: int, min_angle: float = 120):
+def __merge_criteria__(primal_graph: PrimalGraph, neighbors: list, source: int, src_edge: int, min_angle: float = 90):
     """
     The method uses the law of cosines to calculate the angle between the georeferenced coordinates
     of three given nodes. To this end, we approximate the straight-line distance of the sides of the
@@ -130,7 +130,7 @@ def __extend_neighborhood__(primal_graph: PrimalGraph, neighborhood: list,
     return False
 
 
-def __merge_streets__(primal_graph: PrimalGraph, dual_node: DualGraph.Node, min_angle: float = 120.0):
+def __merge_streets__(primal_graph: PrimalGraph, dual_node: DualGraph.Node, min_angle: float = 90.0):
     """
     This method holds the recursive calls that grow the streets of a city in the form of a dual graph node. First, the
     technique explores the neighborhood looking for candidates and then, it uses the best candidate to form a street.
@@ -162,7 +162,7 @@ def __merge_streets__(primal_graph: PrimalGraph, dual_node: DualGraph.Node, min_
     __merge_streets__(primal_graph, dual_node)
 
 
-def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 120.0):
+def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 90.0):
     """
     This is a straightforward method, which is capable of mapping a PrimalGraph object into a DualGraph one.
     The method maps the streets of the cities to nodes and the intersections among them to edges.
