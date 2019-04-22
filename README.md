@@ -53,7 +53,7 @@ p_graph = from_osmnx(oxg=oxg, use_label=True)
 # maps the primal graph to the dual representation
 # use_label = True: uses HICN algorithm
 # use_label = False: uses ICN algorithm
-d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
+d_graph = dual_mapper(primal_graph=p_graph, min_angle=90)
 
 # you must create the data directory before running this command
 dxg = write_graphml(graph=d_graph, filename='file.graphml', directory='data')
