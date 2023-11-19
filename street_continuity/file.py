@@ -93,7 +93,7 @@ def from_osmnx(oxg: nx.MultiDiGraph, use_label: bool):
     oxg = nx.Graph(oxg)
 
     # removing self-loops from the resulting graph
-    oxg.remove_edges_from(oxg.selfloop_edges())
+    oxg.remove_edges_from(nx.selfloop_edges(oxg))
 
     # latitude (y-axis) and longitude (x-axis)
     node_dictionary = {nid: (data['y'], data['x']) for nid, data in oxg.nodes(data=True)}
@@ -162,14 +162,14 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
         # inserting new node and related attributes
         nxg.add_node(nid)
         # GraphML does not support lists and dictionaries as objects, so we must add attributes one by one
-        nxg.node[nid]['names'] = str(data.names)
-        nxg.node[nid]['nodes'] = str(data.nodes)
-        nxg.node[nid]['edges'] = str(data.edges)
-        nxg.node[nid]['source'] = data.source
-        nxg.node[nid]['target'] = data.target
-        nxg.node[nid]['length'] = data.length
-        nxg.node[nid]['src_edge'] = data.src_edge
-        nxg.node[nid]['tgt_edge'] = data.tgt_edge
+        nxg.nodes[nid]['names'] = str(data.names)
+        nxg.nodes[nid]['nodes'] = str(data.nodes)
+        nxg.nodes[nid]['edges'] = str(data.edges)
+        nxg.nodes[nid]['source'] = data.source
+        nxg.nodes[nid]['target'] = data.target
+        nxg.nodes[nid]['length'] = data.length
+        nxg.nodes[nid]['src_edge'] = data.src_edge
+        nxg.nodes[nid]['tgt_edge'] = data.tgt_edge
 
     # creating edges that connect nodes whenever we have two edges (PrimalEdge) crossings each other
     for eid, (source, target) in graph.edge_dictionary.items():

@@ -29,9 +29,9 @@ setup(name='StreetContinuity',
       license='GLP-3.0',
       packages=['street_continuity'],
       install_requires=[
-          'numpy>=1.15.4',
-          'osmnx>=0.8.1',
-          'networkx>= 2.1',
+          'numpy>=1.26.2',
+          'osmnx>=1.7.1',
+          'networkx>=3.2.1',
       ],
       include_package_data=True,
       zip_safe=False)
