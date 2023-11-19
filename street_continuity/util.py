@@ -10,6 +10,7 @@
 import warnings
 import osmnx as ox
 import numpy as np
+import osmnx.distance as oxd
 
 
 def compute_distance(source_coordinates: tuple, target_coordinates: tuple):
@@ -25,7 +26,7 @@ def compute_distance(source_coordinates: tuple, target_coordinates: tuple):
     target_longitude, target_latitude = target_coordinates
 
     # calculating the length of the edge
-    return np.round(ox.great_circle_vec(source_latitude, source_longitude, target_latitude, target_longitude), 2)
+    return np.round(oxd.great_circle(source_latitude, source_longitude, target_latitude, target_longitude), 2)
 
 
 def compute_angle(neighbor, source, target):

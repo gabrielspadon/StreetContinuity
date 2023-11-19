@@ -96,3 +96,8 @@ notebooks/.ipynb_checkpoints/*
 notebooks/cache/*
 cache/*
 
+# Files created by installing via pip
+/StreetContinuity.egg-info
+
+# Used for local tests
+/local_test
