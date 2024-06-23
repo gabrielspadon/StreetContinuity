@@ -22,9 +22,9 @@ For details about their implementation, please refer to:
 Dependencies
 --------------
 
-* numpy (1.15.4)
-* osmnx (0.8.1)
-* networkx (2.1)
+* numpy (1.26.2)
+* osmnx (1.7.1)
+* networkx (3.2.1)
 
 Instalation (for developers)
 --------------
