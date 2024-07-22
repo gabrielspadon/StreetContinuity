@@ -112,16 +112,16 @@ class DualGraph:
         for eid, edge in self.edge_dictionary.items():
 
             # storing the outgoing link
-            if edge.source not in self.graph.keys():
-                self.graph[edge.source] = {edge.target: None}
+            if edge[0] not in self.graph.keys():
+                self.graph[edge[0]] = {edge[-1]: None}
 
-            self.graph[edge.source][edge.target] = edge.eid
+            self.graph[edge[0]][edge[-1]] = eid
 
             # storing the incoming link
-            if edge.target not in self.graph.keys():
-                self.graph[edge.target] = {edge.source: None}
+            if edge[-1] not in self.graph.keys():
+                self.graph[edge[-1]] = {edge[0]: None}
 
-            self.graph[edge.target][edge.source] = edge.eid
+            self.graph[edge[-1]][edge[0]] = eid
 
         return self
 
