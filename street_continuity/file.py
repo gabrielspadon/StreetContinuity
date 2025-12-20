@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 #   Copyright 2019, Gabriel Spadon, all rights reserved.
 #   This code is under GNU General Public License v3.0.
@@ -7,12 +6,12 @@
 # Verified on February 1th, 2019.
 
 
-from street_continuity.util import *
-from street_continuity.graph import *
-
 import csv
-import numpy as np
+
 import networkx as nx
+
+from street_continuity.graph import DualGraph, PrimalGraph
+from street_continuity.util import compute_distance
 
 
 def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label: bool, has_header: bool = False):
@@ -32,11 +31,11 @@ def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label
     primal_graph = PrimalGraph()
 
     node_dictionary = {}
-    with open(directory + '/' + nodes_filename, 'r') as csv_file:
+    with open(directory + '/' + nodes_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
         for nid, lon, lat in csv_reader:
             if not has_header:
-                node_dictionary[nid] = [np.float(lon), np.float(lat)]
+                node_dictionary[nid] = [float(lon), float(lat)]
             has_header = False
         csv_file.close()
 
@@ -44,13 +43,13 @@ def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label
     primal_graph.node_dictionary = node_dictionary
 
     edge_dictionary = {}
-    with open(directory + '/' + edges_filename, 'r') as csv_file:
+    with open(directory + '/' + edges_filename) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
 
         for eid, source, target, length, name, label in csv_reader:
             if not has_header:
                 if compute_distance(node_dictionary[source], node_dictionary[target]) > 0.0:  # sanity check: self-loops are not allowed
-                    edge_dictionary[eid] = primal_graph.Edge(eid, source, target, np.float(length),
+                    edge_dictionary[eid] = primal_graph.Edge(eid, source, target, float(length),
                                                              name, label if use_label else 'unclassified')
             has_header = False
         csv_file.close()
@@ -135,12 +134,12 @@ def write_supplementary(graph: DualGraph, filename: str = 'supplementary.txt', d
     """
 
     # assembling the output file path
-    filepath = '{}/{}'.format(directory, filename)
+    filepath = f'{directory}/{filename}'
 
     # will overwrite the file if it exists
     with open(filepath, 'w+') as supplementary_file:
         for nid, data in graph.node_dictionary.items():
-            supplementary_file.write('%s, %f, %s, %s, %s\n' % (nid, data.length, data.label, data.names, data.nodes))
+            supplementary_file.write(f'{nid}, {data.length:f}, {data.label}, {data.names}, {data.nodes}\n')
         supplementary_file.close()
 
     return
@@ -179,7 +178,7 @@ def write_graphml(graph: DualGraph, filename: str = 'file.graphml', directory: s
         nxg.edges[(source, target)]['eid'] = eid
 
     # assembling the output file path
-    filepath = '{}/{}'.format(directory, filename)
+    filepath = f'{directory}/{filename}'
 
     # writing the resulting graph to the informed file path
     nx.write_graphml(G=nxg, path=filepath, encoding='utf-8', prettyprint=True, infer_numeric_types=False)

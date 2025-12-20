@@ -73,6 +73,3 @@ License
 
 import sys
 
-if sys.version_info[:2] < (3, 4):
-    m = "Python 3.4 or later is required by StreetContinuity (%d.%d was detected)."
-    raise ImportError(m % sys.version_info[:2])

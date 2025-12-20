@@ -1,37 +1,55 @@
 #
-#   Copyright 2019, Gabriel Spadon, all rights reserved.
+#   Copyright 2019-2024, Gabriel Spadon, all rights reserved.
 #   This code is under GNU General Public License v3.0.
 #       www.spadon.com.br & gabriel@spadon.com.br
 #
-# Verified on February 4th, 2019.
+
+from pathlib import Path
 
 from setuptools import setup
 
-setup(name='StreetContinuity',
-      version='0.1',
-      description='StreetContinuity is a tool-set to maps primal graphs to dual graphs, focusing on street networks.',
-      classifiers=[
-        'Development Status :: 0 - Alpha',
-        'License :: GNU General Public License v3.0',
+# Read README with safe fallback
+this_directory = Path(__file__).parent
+readme_file = this_directory / "README.md"
+long_description = readme_file.read_text(encoding='utf-8') if readme_file.exists() else ""
+
+setup(
+    name='StreetContinuity',
+    version='0.1.0',
+    description='StreetContinuity is a tool-set to maps primal graphs to dual graphs, focusing on street networks.',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: OS Independent',
         'Intended Audience :: Science/Research',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7'
-        'Topic :: Graph Processing',
-      ],
-      platforms='any',
-      url='https://github.com/gabrielspadon/StreetContinuity',
-      author='Gabriel Spadon',
-      author_email='gabriel@spadon.com.br',
-      license='GLP-3.0',
-      packages=['street_continuity'],
-      install_requires=[
-          'numpy>=1.26.2',
-          'osmnx>=1.7.1',
-          'networkx>=3.2.1',
-      ],
-      include_package_data=True,
-      zip_safe=False)
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Topic :: Scientific/Engineering :: GIS',
+    ],
+    keywords='street networks, dual graphs, primal graphs, urban analysis, GIS',
+    platforms='any',
+    url='https://github.com/gabrielspadon/StreetContinuity',
+    author='Gabriel Spadon',
+    author_email='gabriel@spadon.com.br',
+    license='GPL-3.0',
+    packages=['street_continuity'],
+    python_requires='>=3.10',
+    install_requires=[
+        'numpy>=1.21.0,<2.0',
+        'osmnx>=1.0.0,<3.0',  # Now compatible with OSMnx 1.x and 2.x
+        'networkx>=2.6.0,<4.0',
+        'geopandas>=0.9.0,<1.0',
+    ],
+    extras_require={
+        'dev': [
+            'pytest>=7.0.0',
+            'ruff>=0.1.0',
+        ],
+    },
+    include_package_data=True,
+    zip_safe=False,
+)

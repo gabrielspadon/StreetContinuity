@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 #   Copyright 2019, Gabriel Spadon, all rights reserved.
 #   This code is under GNU General Public License v3.0.
@@ -7,10 +6,10 @@
 # Verified on February 4th, 2019.
 
 
-from street_continuity.util import *
-from street_continuity.graph import *
-
 import numpy as np
+
+from street_continuity.graph import DualGraph, PrimalGraph
+from street_continuity.util import compute_angle
 
 
 def __merge_criteria__(primal_graph: PrimalGraph, neighbors: list, source: int, src_edge: int, min_angle: float = 90):
@@ -58,7 +57,7 @@ def __explore_neighborhood__(primal_graph: PrimalGraph, dual_node: DualGraph.Nod
     reverse_seed = dual_node.target if is_upstream else dual_node.source
 
     neighborhood = []
-    for neighbor in primal_graph.graph[leading_seed].keys():
+    for neighbor in primal_graph.graph[leading_seed]:
         # checking whether this is a self-loop or the current edge
         if neighbor != reverse_seed:
             if is_upstream:
@@ -176,7 +175,7 @@ def dual_mapper(primal_graph: PrimalGraph, min_angle: float = 90.0):
 
     nid = 0
     # populating nodes' dictionary
-    for eid in primal_graph.edge_dictionary.keys():
+    for eid in primal_graph.edge_dictionary:
         primal_edge = primal_graph.edge_dictionary[eid]
         if not primal_edge.mapped:
             # setting the primal edge as mapped to dual

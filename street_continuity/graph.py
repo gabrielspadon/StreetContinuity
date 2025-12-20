@@ -1,4 +1,3 @@
-# coding=utf-8
 #
 #   Copyright 2019, Gabriel Spadon, all rights reserved.
 #   This code is under GNU General Public License v3.0.
@@ -44,16 +43,16 @@ class PrimalGraph:
         :return: PrimalGraph
         """
 
-        for eid, edge in self.edge_dictionary.items():
+        for _eid, edge in self.edge_dictionary.items():
 
             # storing the outgoing link
-            if edge.source not in self.graph.keys():
+            if edge.source not in self.graph:
                 self.graph[edge.source] = {edge.target: None}
 
             self.graph[edge.source][edge.target] = edge.eid
 
             # storing the incoming link
-            if edge.target not in self.graph.keys():
+            if edge.target not in self.graph:
                 self.graph[edge.target] = {edge.source: None}
 
             self.graph[edge.target][edge.source] = edge.eid
@@ -112,13 +111,13 @@ class DualGraph:
         for eid, edge in self.edge_dictionary.items():
 
             # storing the outgoing link
-            if edge[0] not in self.graph.keys():
+            if edge[0] not in self.graph:
                 self.graph[edge[0]] = {edge[-1]: None}
 
             self.graph[edge[0]][edge[-1]] = eid
 
             # storing the incoming link
-            if edge[-1] not in self.graph.keys():
+            if edge[-1] not in self.graph:
                 self.graph[edge[-1]] = {edge[0]: None}
 
             self.graph[edge[-1]][edge[0]] = eid
