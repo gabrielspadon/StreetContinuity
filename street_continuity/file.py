@@ -9,6 +9,7 @@
 import csv
 
 import networkx as nx
+import osmnx as ox  # Required for read_graphml function
 
 from street_continuity.graph import DualGraph, PrimalGraph
 from street_continuity.util import compute_distance
