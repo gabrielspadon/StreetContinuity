@@ -7,6 +7,7 @@
 
 
 import csv
+from pathlib import Path
 
 import networkx as nx
 import osmnx as ox  # Required for read_graphml function
@@ -31,8 +32,16 @@ def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label
     # creating an empty primal graph
     primal_graph = PrimalGraph()
 
+    # Validate file paths exist before opening
+    nodes_path = Path(directory) / nodes_filename
+    edges_path = Path(directory) / edges_filename
+    if not nodes_path.exists():
+        raise FileNotFoundError(f"Nodes file not found: {nodes_path}")
+    if not edges_path.exists():
+        raise FileNotFoundError(f"Edges file not found: {edges_path}")
+
     node_dictionary = {}
-    with open(directory + '/' + nodes_filename) as csv_file:
+    with open(nodes_path) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
         for nid, lon, lat in csv_reader:
             if not has_header:
@@ -44,7 +53,7 @@ def read_csv(nodes_filename: str, edges_filename: str, directory: str, use_label
     primal_graph.node_dictionary = node_dictionary
 
     edge_dictionary = {}
-    with open(directory + '/' + edges_filename) as csv_file:
+    with open(edges_path) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
 
         for eid, source, target, length, name, label in csv_reader:
@@ -110,8 +119,10 @@ def from_osmnx(oxg: nx.MultiDiGraph, use_label: bool):
                                   node_dictionary[target])  # straight-line distance between source and target nodes
 
         # creating a new PrimalEdge with information from the current edge
-        edge = primal_graph.Edge(eid, source, target, float(length), 'unknown' if type(name) == list else name,
-                                 'unclassified' if type(label) == list else label if use_label else 'unclassified')
+        # Fixed: Use isinstance() instead of type() == for proper type checking
+        edge = primal_graph.Edge(eid, source, target, float(length),
+                                 'unknown' if isinstance(name, list) else name,
+                                 'unclassified' if isinstance(label, list) else (label if use_label else 'unclassified'))
 
         # storing the new edge in the edge dictionary
         edge_dictionary[eid] = edge

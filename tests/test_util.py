@@ -56,8 +56,10 @@ class TestComputeDistance:
         """Test that parameters are passed in correct order (lat, lon)."""
         mock_great_circle.return_value = 50.0
 
-        source = (lon1, lat1) = (10.0, 20.0)
-        target = (lon2, lat2) = (30.0, 40.0)
+        lon1, lat1 = 10.0, 20.0
+        source = (lon1, lat1)
+        lon2, lat2 = 30.0, 40.0
+        target = (lon2, lat2)
 
         compute_distance(source, target)
 
