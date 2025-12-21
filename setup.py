@@ -37,7 +37,7 @@ setup(
     author_email='gabriel@spadon.com.br',
     license='GPL-3.0',
     packages=['street_continuity'],
-    python_requires='>=3.10',
+    python_requires='>=3.10,<3.13',
     install_requires=[
         'numpy>=1.24.0,<3.0',
         'osmnx>=2.0.0,<3.0',  # Pinned to 2.x to avoid API incompatibilities
