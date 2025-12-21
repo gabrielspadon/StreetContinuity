@@ -36,7 +36,9 @@ Example
 --------------
 
     >>> import osmnx as ox
-    >>> from street_continuity.all import *
+    >>> from street_continuity.graph import from_osmnx
+    >>> from street_continuity.mapper import dual_mapper
+    >>> from street_continuity.file import write_graphml, write_supplementary
 
     >>> oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
 

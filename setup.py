@@ -39,7 +39,7 @@ setup(
     packages=['street_continuity'],
     python_requires='>=3.10',
     install_requires=[
-        'numpy>=1.21.0,<2.0',
+        'numpy>=1.24.0,<3.0',
         'osmnx>=2.0.0,<3.0',  # Pinned to 2.x to avoid API incompatibilities
         'networkx>=2.6.0,<4.0',
         'geopandas>=0.9.0,<1.0',
