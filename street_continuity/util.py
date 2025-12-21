@@ -96,6 +96,10 @@ def compute_angle(neighbor, source, target) -> float:
     d_nt = compute_distance(source, target)
     d_st = compute_distance(neighbor, target)
 
+    # Guard against division by zero when nodes overlap
+    if d_sn * d_nt == 0:
+        return 0.0
+
     # calculating the law of cosines and forcing bounds into -1 and +1
     cos_law = min(max(-1.0, (((d_sn ** 2.0) + (d_nt ** 2.0) - (d_st ** 2.0)) / (2.0 * d_sn * d_nt))), 1.0)
 
