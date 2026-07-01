@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "StreetContinuity"
+version = "0.2.0"
+description = "Primal-to-dual street network transformation using the ICN and HICN algorithms."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Gabriel Spadon", email = "gabriel@spadon.com.br" }]
+keywords = ["street networks", "dual graph", "primal graph", "urban analysis", "GIS", "OSMnx"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = [
+    "numpy>=1.24",
+    "osmnx>=2.0,<3.0",
+    "networkx>=2.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov>=4.0", "ruff>=0.1"]
+
+[project.urls]
+Homepage = "https://github.com/gabrielspadon/StreetContinuity"
+Repository = "https://github.com/gabrielspadon/StreetContinuity"
+"Bug Tracker" = "https://github.com/gabrielspadon/StreetContinuity/issues"
+
+[project.scripts]
+street-continuity = "street_continuity.__main__:main"
+
+[tool.setuptools]
+packages = ["street_continuity"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

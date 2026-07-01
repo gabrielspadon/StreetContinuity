@@ -1,63 +1,35 @@
-# IDE
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing / linting
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# IDE / editor
 .idea/
 .vscode/
-*.iws
-out/
-.idea_modules/
-
-# CMake
-cmake-build-debug/
-cmake-build-release/
-
-# Compiled source
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
-*.pyc
-
-# Packages
-*.7z
-*.dmg
-*.gz
-*.iso
-*.rar
-*.tar
-*.zip
-
-# Logs and databases
-*.log
-*.sqlite
-
-# OS generated files
-.DS_Store
-ehthumbs.db
-Icon
-Thumbs.db
-.tmtags
-.idea
-tags
-vendor.tags
-tmtagsHistory
 *.sublime-project
 *.sublime-workspace
-.bundle
 
-# Virtual Env
+# OS files
+.DS_Store
+Thumbs.db
 
-py27/*
-py36/*
-
-# Jupyter
-
-notebooks/.ipynb_checkpoints/*
-notebooks/cache/*
-cache/*
-
-# Files created by installing via pip
-/StreetContinuity.egg-info
-
-# Used for local tests
-/local_test
+# Local scratch
+/local_test/

@@ -1,77 +1,79 @@
 """
 StreetContinuity (SC)
---------------
+=====================
 
-    StreetContinuity (SC) is a python library that implements both Intersection Continuity Negotiation (ICN) and
-    Hierarchical Intersection Continuity Negotiation (HICN). ICN was first proposed by Porta et al. (2006) and
-    further enhanced by Masucci et al. (2014), who advanced with the HICN approach.
+StreetContinuity is a Python library that implements the Intersection Continuity
+Negotiation (ICN) and Hierarchical Intersection Continuity Negotiation (HICN)
+algorithms. ICN was first proposed by Porta et al. (2006) and later extended by
+Masucci et al. (2014), who introduced the hierarchical (HICN) variant.
 
-    For details about each implementation, please refer to:
+The library converts a street network from its *primal* representation (nodes are
+intersections, edges are street segments) into its *dual* representation (nodes are
+continuous streets, edges are the intersections between them). The transformation
+deliberately trades the spatial attribute for a semantic one; the dual graph carries
+no geometry and lives in what Masucci et al. call *information space*, where network
+measures describe how streets relate instead of where they sit.
 
-    [1] Sergio Porta, Paolo Crucitti, Vito Latora, "The network analysis of urban streets: A dual approach", Physica A:
-        Statistical Mechanics and its Applications, Volume 369, Issue 2, 2006, Pages 853-866, ISSN 0378-4371.
-
-    [2] Masucci, A. P., Stanilov, K., Batty, M. (2014). "Exploring the evolution of London's street
-        network in the information space: A dual approach." Physical Review E, 89(1), 012805.
+References
+----------
+[1] Sergio Porta, Paolo Crucitti, Vito Latora. "The network analysis of urban
+    streets: A dual approach." Physica A, 369(2), 2006, pp. 853-866.
+[2] A. P. Masucci, K. Stanilov, M. Batty. "Exploring the evolution of London's
+    street network in the information space: A dual approach." Physical Review E,
+    89(1), 2014, 012805.
 
 Acknowledgement
---------------
-
-    I want to thank Elisabeth H. Krueger and Xianyuan Zhan, who provide me with their version of the HICN.
-    Their code gave some insights and helped in the process of validation of the results.
-
-    For details about their implementation, please refer to:
-
-    [3] Krueger, E., Klinkhamer, C., Urich, C., Zhan, X., & Rao, P. S. C. (2017). "Generic patterns in the evolution
-        of urban water networks: Evidence from a large Asian city". Physical Review E, 95(3), 032312.
-
-Dependencies
---------------
-
-    * numpy (1.15.4)
-    * osmnx (0.8.1)
-    * networkx (2.1)
+---------------
+Thanks to Elisabeth H. Krueger and Xianyuan Zhan for sharing their version of the
+HICN algorithm, which helped validate these results.
+[3] Krueger, E., Klinkhamer, C., Urich, C., Zhan, X., Rao, P. S. C. (2017). "Generic
+    patterns in the evolution of urban water networks: Evidence from a large Asian
+    city." Physical Review E, 95(3), 032312.
 
 Example
---------------
-
+-------
     >>> import osmnx as ox
-    >>> from street_continuity.graph import from_osmnx
+    >>> from street_continuity.file import from_osmnx, write_graphml, write_supplementary
     >>> from street_continuity.mapper import dual_mapper
-    >>> from street_continuity.file import write_graphml, write_supplementary
-
-    >>> oxg = ox.graph_from_point((-22.012282, -47.890821), distance=5000)
-
-    >>> # use_label = True: uses HICN algorithm
-    >>> # use_label = False: uses ICN algorithm
-
-    >>> p_graph = from_osmnx(oxg=oxg, use_label=True)
-    >>> d_graph = dual_mapper(primal_graph=p_graph, min_angle=120)
-
-    >>> # you must create the data directory before running this command
-    >>> write_graphml(graph=d_graph, filename='file.graphml', directory='data')
-    >>> write_supplementary(graph=d_graph, filename='supplementary.txt', directory='data')
-
-Links
---------------
-
-    Portfolio::
-        https://spadon.com.br/
-
-    Source::
-        https://github.com/gabrielspadon/StreetContinuity
-
-Bugs
-----
-    Please report any bugs that you find at https://github.com/gabrielspadon/StreetContinuity/issues.
-    Or, even better, fork the repository on GitHub and create a pull request.
+    >>>
+    >>> oxg = ox.graph_from_point((-22.012282, -47.890821), dist=5000)
+    >>> primal = from_osmnx(oxg=oxg, use_label=True)   # use_label=True -> HICN, False -> ICN
+    >>> dual = dual_mapper(primal_graph=primal, min_angle=120)
+    >>> write_graphml(graph=dual, filename="dual.graphml", directory="data")
+    >>> write_supplementary(graph=dual, filename="supplementary.txt", directory="data")
 
 License
 -------
-    Released under the GNU General Public License v3.0 (GLP-3.0).
-    Copyright 2019, Gabriel Spadon, all rights reserved.
-        www.spadon.com.br & gabriel@spadon.com.br
+Released under the GNU General Public License v3.0.
+Copyright 2019, Gabriel Spadon.
+    gabriel@spadon.com.br
 """
 
-import sys
+from street_continuity.file import (
+    from_osmnx,
+    read_csv,
+    read_graphml,
+    write_graphml,
+    write_supplementary,
+)
+from street_continuity.graph import DualGraph, PrimalGraph
+from street_continuity.mapper import dual_mapper
+from street_continuity.util import compute_angle, compute_distance
 
+__version__ = "0.2.0"
+__author__ = "Gabriel Spadon"
+__license__ = "GPL-3.0-or-later"
+
+__all__ = [
+    "PrimalGraph",
+    "DualGraph",
+    "from_osmnx",
+    "read_csv",
+    "read_graphml",
+    "dual_mapper",
+    "write_graphml",
+    "write_supplementary",
+    "compute_angle",
+    "compute_distance",
+    "__version__",
+]

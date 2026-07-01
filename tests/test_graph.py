@@ -1,12 +1,6 @@
-import pytest
-import sys
-from pathlib import Path
+"""Unit tests for the PrimalGraph and DualGraph containers."""
 
-# Add parent directory to path
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
-
-from street_continuity.graph import PrimalGraph, DualGraph
+from street_continuity.graph import DualGraph, PrimalGraph
 
 
 class TestPrimalEdge:
@@ -15,12 +9,7 @@ class TestPrimalEdge:
     def test_edge_initialization(self):
         """Test that PrimalEdge initializes with correct attributes."""
         edge = PrimalGraph.Edge(
-            eid=1,
-            source="node1",
-            target="node2",
-            length=100.5,
-            name="Main Street",
-            label="primary"
+            eid=1, source="node1", target="node2", length=100.5, name="Main Street", label="primary"
         )
 
         assert edge.eid == 1
@@ -103,12 +92,7 @@ class TestDualNode:
     def test_node_initialization_from_edge(self):
         """Test that DualNode initializes correctly from a PrimalEdge."""
         primal_edge = PrimalGraph.Edge(
-            eid=5,
-            source="n1",
-            target="n2",
-            length=50.0,
-            name="Oak Avenue",
-            label="residential"
+            eid=5, source="n1", target="n2", length=50.0, name="Oak Avenue", label="residential"
         )
 
         dual_node = DualGraph.Node(did=1, pge=primal_edge)
@@ -166,11 +150,7 @@ class TestDualGraph:
     def test_build_graph_multiple_edges(self):
         """Test building dual graph with multiple edges."""
         dg = DualGraph()
-        edges = {
-            1: (1, 2),
-            2: (2, 3),
-            3: (3, 1)
-        }
+        edges = {1: (1, 2), 2: (2, 3), 3: (3, 1)}
         dg.set_edges(edges)
         dg.build_graph()
 
@@ -198,8 +178,7 @@ class TestGraphIntegration:
         pg.set_edges({1: edge1, 2: edge2})
         pg.build_graph()
 
-        # Create dual graph from primal edges
-        dg = DualGraph()
+        # Create a dual node from a primal edge
         dual_node = DualGraph.Node(1, edge1)
 
         assert dual_node.names == ["Main St"]
